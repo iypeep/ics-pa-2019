@@ -39,7 +39,7 @@ CFLAGS   += -O2 -MMD -Wall -Werror -ggdb3 $(INCLUDES) -D__ISA__=$(ISA) -fomit-fr
 QEMU_DIFF_PATH = $(NEMU_HOME)/tools/qemu-diff #QEMU_DIFF_PATH：这个变量定义了QEMU的差异工具的路径。差异:DIFF-different
 QEMU_SO = $(QEMU_DIFF_PATH)/build/$(ISA)-qemu-so# /build在make之前没有
 
-$(QEMU_SO):								
+$(QEMU_SO):	#$(MAKE)：这是一个特殊的变量，它代表make命令本身。在递归地调用make命令时，通常使用这个变量而不是直接使用make，以确保使用与顶层make命令相同的版本和选项。							
 	$(MAKE) -C $(QEMU_DIFF_PATH)  
 #这个规则(上面这两行)的意思是，当需要构建$(QEMU_SO)目标时，make命令会切换到$(QEMU_DIFF_PATH)目录，并在那里执行另一个make命令。这通常意味着$(QEMU_DIFF_PATH)目录下有一个Makefile文件，它知道如何构建$(QEMU_SO)目标。
 
