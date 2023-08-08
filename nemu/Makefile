@@ -44,9 +44,9 @@ $(QEMU_SO):	#$(MAKE)：这是一个特殊的变量，它代表make命令本身�
 #这个规则(上面这两行)的意思是，当需要构建$(QEMU_SO)目标时，make命令会切换到$(QEMU_DIFF_PATH)目录，并在那里执行另一个make命令。这通常意味着$(QEMU_DIFF_PATH)目录下有一个Makefile文件，它知道如何构建$(QEMU_SO)目标。
 
 # Files to be compiled
-SRCS = $(shell find src/ -name "*.c" | grep -v "isa")
-SRCS += $(shell find src/isa/$(ISA) -name "*.c")
-OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)
+SRCS = $(shell find src/ -name "*.c" | grep -v "isa")#$(shell ...)：这是一个Makefile函数，它允许你执行外部的shell命令并获取其输出。#find src/ -name "*.c"：这个shell命令在src/目录及其子目录中查找所有的.c文件。| grep -v "isa"：这个部分使用grep命令过滤掉包含“isa”字符串的文件。-v选项告诉grep排除匹配的行。
+SRCS += $(shell find src/isa/$(ISA) -name "*.c")#这行代码向SRCS变量添加更多的文件。find src/isa/$(ISA) -name "*.c"：这个shell命令在src/isa/$(ISA)目录及其子目录中查找所有的.c文件。
+OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)#这行代码定义了OBJS变量，它表示由SRCS变量中的源文件生成的对象文件。$(SRCS:src/%.c=$(OBJ_DIR)/%.o)：这是一个字符串替换操作。它将SRCS变量中的每个字符串src/%.c替换为$(OBJ_DIR)/%.o。%是一个通配符，它匹配任何字符串。$(OBJ_DIR)是一个变量，它表示对象文件的目录。所以，OBJS变量包含了与SRCS变量中的每个源文件对应的对象文件的路径。
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: src/%.c
